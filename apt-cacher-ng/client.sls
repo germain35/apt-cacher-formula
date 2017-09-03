@@ -8,7 +8,7 @@
     - user: root
     - group: root
     - mode: '644'
-    - source: salt://apt-cacher-ng/ng/files/client.conf
+    - source: salt://apt-cacher-ng/files/client.conf
     - template: jinja
 {%- endif %}
 {% endif %}
