@@ -1,5 +1,5 @@
 {% if grains['os_family'] == 'Debian' %}
-{% from "apt-cacher/ng/map.jinja" import apt_cacher_ng with context %}
+{% from "apt-cacher-ng/map.jinja" import apt_cacher_ng with context %}
 
 {% if 'include' in apt_cacher_ng %}
 include:
@@ -32,7 +32,7 @@ apt-cacher-ng:
     - user: root
     - group: root
     - mode: '644'
-    - source: salt://apt-cacher/ng/files/server.conf
+    - source: salt://apt-cacher-ng/files/server.conf
     - template: jinja
 
 {{ apt_cacher_ng.server_cache_dir }}:
@@ -54,6 +54,6 @@ apt-cacher-ng:
     - user: {{ apt_cacher_ng.user }}
     - group: {{ apt_cacher_ng.group }}
     - mode: '600'
-    - source: salt://apt-cacher/ng/files/security.conf
+    - source: salt://apt-cacher-ng/files/security.conf
     - template: jinja
 {% endif %}
