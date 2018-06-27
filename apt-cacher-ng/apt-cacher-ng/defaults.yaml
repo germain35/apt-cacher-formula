@@ -1,0 +1,6 @@
+apt_cacher_ng:
+  server_address: localhost
+  server_bind_address: 0.0.0.0
+  server_port: 3142
+  admin_account: root
+  admin_passwd: admin
