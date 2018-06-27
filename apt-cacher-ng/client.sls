@@ -3,8 +3,7 @@
 {%- if apt_cacher_ng.server_address %}
 
 {{ apt_cacher_ng.client_config }}:
-  file:
-    - managed
+  file.managed:
     - user: root
     - group: root
     - mode: '644'

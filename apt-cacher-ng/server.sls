@@ -41,6 +41,7 @@ apt-cacher-ng:
     - user: {{ apt_cacher_ng.user }}
     - group: {{ apt_cacher_ng.group }}
     - mode: '2755'
+    - clean: {{ apt_cacher_ng.get('purge_cache', False) }}
 
 {{ apt_cacher_ng.server_log_dir }}:
   file.directory:

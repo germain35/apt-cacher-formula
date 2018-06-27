@@ -1,8 +1,15 @@
-{% set apt_cacher_ng = salt['grains.filter_by']({
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{%- set os         = salt['grains.get']('os') %}
+{%- set osrelease  = salt['grains.get']('osrelease') %}
+{%- set oscodename = salt['grains.get']('oscodename') %}
+
+{## Start with defaults from defaults.yaml ##}
+{% import_yaml 'apt-cacher-ng/defaults.yaml' as default_settings %}
+
+{% set os_family_map = salt['grains.filter_by']({
     'Debian': {
-        'server_address': 'localhost',
-        'server_bind_address': '0.0.0.0',
-        'server_port': '3142',
         'server_extra_config': '',
         'server_config': '/etc/apt-cacher-ng/zzz_acng.conf',
         'server_cache_dir': '/var/cache/apt-cacher-ng',
@@ -13,7 +20,18 @@
         'service': 'apt-cacher-ng',
         'credentials': '/etc/apt-cacher-ng/security.conf',
         'client_config': '/etc/apt/apt.conf.d/80proxy',
-        'admin_account': 'root',
-        'admin_passwd': 'admin'
     },
-}, merge=salt['pillar.get']('apt_cacher_ng')) %}
+}
+, grain="os_family"
+, merge=salt['pillar.get']('apt_cacher_ng:lookup')) %}
+
+{## Merge the flavor_map to the default settings ##}
+{% do default_settings.apt_cacher_ng.update(os_family_map) %}
+
+{## Merge in apt:lookup pillar ##}
+{% set apt_cacher_ng = salt['pillar.get'](
+        'apt_cacher_ng',
+        default=default_settings.apt_cacher_ng,
+        merge=True
+    )
+%}
